@@ -25,12 +25,10 @@ public class StudentService {
     public void activateStudent(String name) {
         Student findStudent = getStudent(name);
         findStudent.activate();
-        studentRepository.save(findStudent);
     }
 
     public void deactivateStudent(String name) {
         Student findStudent = getStudent(name);
         findStudent.deactivate();
-        studentRepository.save(findStudent);
     }
 }

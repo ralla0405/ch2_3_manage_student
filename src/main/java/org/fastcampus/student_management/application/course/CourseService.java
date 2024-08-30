@@ -4,6 +4,7 @@ import java.util.List;
 import org.fastcampus.student_management.application.course.dto.CourseInfoDto;
 import org.fastcampus.student_management.application.student.StudentService;
 import org.fastcampus.student_management.domain.Course;
+import org.fastcampus.student_management.domain.CourseList;
 import org.fastcampus.student_management.domain.DayOfWeek;
 import org.fastcampus.student_management.domain.Student;
 import org.fastcampus.student_management.repo.CourseRepository;
@@ -31,16 +32,8 @@ public class CourseService {
   }
 
   public void changeFee(String studentName, int fee) {
-    // 특정 학생의 수강료를 변경 시키면 특정 학생 수업 전체에 적용 되어야 함
-    courseRepository.getCourseListByStudent(studentName).forEach(course -> {
-      Student student = studentService.getStudent(course.getStudentName());
-      Course updatedCourse = new Course(
-          student,
-          course.getCourseName(),
-          fee,
-          course.getDayOfWeek(),
-          course.getCourseTime());
-        courseRepository.save(updatedCourse);
-    });
+    List<Course> courses = courseRepository.getCourseListByStudent(studentName);
+    CourseList courseList = new CourseList(courses);
+    courseList.changeFee(fee);
   }
 }
